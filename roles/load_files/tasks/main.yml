@@ -1,0 +1,37 @@
+- name: Install apt packages
+  become: yes
+  become_user: root
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - unzip, curl
+
+
+- set_fact:
+    GEOIP_DIR: "{{CLICKHOUSE_USER_FILES_PATH}}/{{CLICKHOUSE_GEOIP_DIR_NAME}}"
+    JOB: "curl -s -o /tmp/geoip.zip 'https://download.maxmind.com/app/geoip_download?edition_id={{ MAXMIND_PRODUCT_ID }}&license_key={{ MAXMIND_LICENSE_KEY }}&suffix=zip' && mkdir -p '{{ GEOIP_DIR }}' && unzip -jo /tmp/geoip.zip -d '{{ GEOIP_DIR }}'"
+
+- name: Echo command
+  ansible.builtin.debug:
+      msg: "{{ JOB }}"
+
+- name: Immediate load geoip files
+  become: true
+  become_user: root
+  ansible.builtin.shell: "{{ JOB }}"
+  args:
+    executable: /bin/bash
+
+- name: Shedule loading in cron
+  become_user: root
+  become: true
+  cron:
+    name: geoip autoupdate
+    weekday: "{{CRON_WEEKDAY}}"
+    minute: "{{CRON_MINUTE}}"
+    hour: "{{CRON_HOUR}}"
+    user: root
+    job: "/bin/bash -c {{ JOB }}"
+    cron_file: geoip-autoupdate
+  when: CREATE_CRON_PROCESS

@@ -1,0 +1,32 @@
+
+
+- set_fact:
+    GEOIP_DIR: "{{CLICKHOUSE_USER_FILES_PATH}}/{{CLICKHOUSE_GEOIP_DIR_NAME}}"
+
+- name: Create variable from command
+  shell: "find {{ GEOIP_DIR }} -name '*-Locations-*.csv' | grep -o -P '(?<=Locations-).*(?=.csv)'"
+  register: command_output
+  args:
+    executable: /bin/bash
+
+- set_fact:
+    LOCATIONS: "{{command_output.stdout.split('\n')}}"
+
+- name: Make location queries
+  with_items: "{{ LOCATIONS }}"
+  template:
+    src: locations.j2
+    dest: "./tmp/location-{{item}}.sql"
+  vars:
+    LOCALE: "{{item}}"
+  
+- name: Make block queries
+  with_items:
+    - IPv4
+    - IPv6
+  template:
+    src: blocks.j2
+    dest: "./tmp/block-{{item}}.sql"
+  vars:
+    IP_STANDART: "{{item}}"
+  

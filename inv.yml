@@ -1,0 +1,23 @@
+main:
+  hosts: 127.0.0.1
+  connection: local
+  vars:
+    # Put your license-key here
+    MAXMIND_LICENSE_KEY: ""
+    MAXMIND_PRODUCT_ID: "GeoLite2-City-CSV"
+
+    # Can create process that's will update geoip csv-files's in...
+    CREATE_CRON_PROCESS: true
+    CRON_WEEKDAY: ""
+    CRON_MINUTE: ""
+    CRON_HOUR: ""
+
+    # Path to clickhouse 'user_files'
+    CLICKHOUSE_USER_FILES_PATH: "~/clickhouse/user_files"
+    
+    # Dirrectory with .csv files. Will be created in CLICKHOUSE_USER_FILES_PATH
+    CLICKHOUSE_GEOIP_DIR_NAME: geoip
+
+    # Clickhouse executor. DDL-query will be direct in stdin
+    CLICKHOUSE_EXEC: "clickhouse-client"
+    

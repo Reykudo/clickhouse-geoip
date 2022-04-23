@@ -1,0 +1,8 @@
+- hosts: main
+  connection: local
+  tags:
+    - clickhouse-geoip
+  roles:
+    - load_files
+    - make_ddl_queries
+    - apply_to_clickhouse

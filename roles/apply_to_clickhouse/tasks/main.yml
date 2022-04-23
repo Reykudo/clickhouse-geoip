@@ -1,0 +1,15 @@
+- name: Find sql files
+  find:
+    paths: tmp
+    file_type: file
+    recurse: Yes
+    patterns: "*.sql"
+  register: files_matched
+
+- name: Create dictionaries in clickhouse
+  shell: "cat {{ item.path }} | {{ CLICKHOUSE_EXEC }}"
+  args:
+    executable: /bin/bash
+  loop: "{{ files_matched.files }}"
+  loop_control:
+    label: "{{ item.path }}"

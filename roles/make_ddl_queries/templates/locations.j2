@@ -1,0 +1,22 @@
+CREATE OR REPLACE DICTIONARY default.`GeoLite2-City-Locations-{{ LOCALE }}`
+(
+    `geoname_id` UInt32,
+    `locale_code` String,
+    `continent_code` String,
+    `continent_name` String,
+    `country_iso_code` String,
+    `country_name` String,
+    `subdivision_1_iso_code` String,
+    `subdivision_1_name` String,
+    `subdivision_2_iso_code` String,
+    `subdivision_2_name` String,
+    `city_name` String,
+    `metro_code` String,
+    `time_zone` String,
+    `is_in_european_union` UInt8
+)
+PRIMARY KEY geoname_id
+SOURCE(FILE(PATH '{{ CLICKHOUSE_GEOIP_DIR_NAME }}/GeoLite2-City-Locations-{{ LOCALE }}.csv' FORMAT 'CSVWithNames'))
+LIFETIME(MIN 0 MAX 300)
+LAYOUT(HASHED())
+SETTINGS(format_csv_allow_single_quotes = 0)
