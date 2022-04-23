@@ -14,7 +14,10 @@ main:
 
     # Path to clickhouse 'user_files'
     CLICKHOUSE_USER_FILES_PATH: "~/clickhouse/user_files"
-    
+
+    # database name for dictionaries places in
+    CLICKHOUSE_GEOIP_DB: "default"
+
     # Dirrectory with .csv files. Will be created in CLICKHOUSE_USER_FILES_PATH
     CLICKHOUSE_GEOIP_DIR_NAME: geoip
 

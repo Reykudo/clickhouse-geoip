@@ -1,4 +1,4 @@
-CREATE OR REPLACE DICTIONARY default.`GeoLite2-City-Locations-{{ LOCALE }}`
+CREATE OR REPLACE DICTIONARY {{ CLICKHOUSE_GEOIP_DB }}.`GeoLite2-City-Locations-{{ LOCALE }}`
 (
     `geoname_id` UInt32,
     `locale_code` String,

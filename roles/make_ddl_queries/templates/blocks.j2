@@ -1,4 +1,4 @@
- CREATE OR REPLACE DICTIONARY default.`GeoLite2-City-Blocks-{{ IP_STANDART }}`
+ CREATE OR REPLACE DICTIONARY {{ CLICKHOUSE_GEOIP_DB }}.`GeoLite2-City-Blocks-{{ IP_STANDART }}`
 (
     `network` String,
     `geoname_id` UInt32,
